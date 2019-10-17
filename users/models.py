@@ -8,6 +8,7 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    name = models.CharField(max_length=60, unique=True)
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -15,9 +16,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(upload_to='images/')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['name']
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return self.name

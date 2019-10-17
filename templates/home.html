@@ -1,11 +1,42 @@
-{% extends 'base.html' %}
 
-{% block-content %}
-  {% for post in object_list %}
-    <div class="post-entry">
-      <h2><a href="">{{ post.title }}</a><h2>
-        <p>{{ post.content}}</p>
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for post in post_list %}
+
+<div class="card mb-3" style="max-width: 1500px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{{ post.images.url }}" class="card-img">
     </div>
-  {% endfor %}
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text text-muted h6">{{ post.created_on}} </p>
+        <p class="card-text">{{ post.content|slice:":200" }}</p>
+        <p class="card-text"><small class="text-muted">{{ post.author.name }}</small></p>
+        <a href="{% url 'post_detail' pk=post.pk  %}" class="badge badge-info">Read More &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endfor %}
+
+{% if is_paginated %}
+    <nav aria-label="Page navigation conatiner"></nav>
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; пред. </a></li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> след. &raquo;</a></li>
+
+        {% endif %}
+      </ul>
+{% endif %}
 
 {% endblock content %}
